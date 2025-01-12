@@ -1,8 +1,6 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Main {
     public static void main(String[] args) {
@@ -35,6 +33,62 @@ public class Main {
 
           //foreach can get 2 parameters
           userMap.forEach((key,value) -> System.out.println(key + " : " + value));
+
+          // joining
+          var joinedUserName = users.stream().map(user -> user.name).collect(Collectors.joining(", "));
+          System.out.println(joinedUserName);
+
+          //Stream.concat
+          List<String> list1 = Arrays.asList("apple", "banana", "orange");
+          List<String> list2 = Arrays.asList("grape", "melon", "pineapple");
+
+          Stream<String> stream1 = list1.stream();
+          Stream<String> stream2 = list2.stream();
+
+          Stream<String> concatenatedStream = Stream.concat(stream1,stream2);
+          concatenatedStream.forEach(System.out::println);
+
+
+          // FlatMap()
+          //Question:  Given a List of integers, return a List which contains numbers and negative of those numbers in same order.
+          // For example, input list is [1, 2, 3, 4, 5, 6] then you should return a list containing [1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6]
+
+          List<Integer> numbers = Arrays.asList(1,2,3,4,5);
+          List<Integer> numbersAndNegatives = numbers.stream()
+                                                     .flatMap(x -> Stream.of(x,-x))
+                                                     .toList();
+
+          numbersAndNegatives.forEach(item -> System.out.println(item.toString()));
+
+
+          //Or flatmap()
+
+        List<Integer> odds = Arrays.asList(1,5,9);
+        List<Integer> evens = Arrays.asList(2,4,8);
+        List<Integer> primes = Arrays.asList(2,7,11);
+
+        var totalList = Stream.of(odds,evens,primes)
+                .flatMap(Collection::stream)
+                .toList();
+        System.out.println(totalList);
+
+        //takeWhile using
+        Stream<Integer> stream
+                = Stream.of(4, 4, 4, 5, 6, 7, 8, 9, 10);
+
+        List<Integer> list
+                = stream.takeWhile(number -> (number / 4 == 1))
+                .collect(Collectors.toList());
+
+        System.out.println(list);
+
+//        convert to Array to Stream
+
+        String[] arrayString = {"Java","Python","C#"};
+
+        Stream arrayToStream = Stream.of(arrayString);
+
+        arrayToStream.forEach(System.out::println);
 
     }
 
